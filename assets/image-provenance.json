@@ -1,0 +1,13 @@
+{
+  "created_on": "2026-11-04",
+  "method": "Built-in image_gen",
+  "asset": "hero-car.webp",
+  "width": 1774,
+  "height": 887,
+  "transparent": true,
+  "conceptual_image": true,
+  "not_documentary_company_photo": true,
+  "prompt": "Use case: stylized-concept. Asset type: premium car wash website hero, isolated wide automotive CGI artwork on real transparent alpha background. Subject: one immaculate pearl-silver contemporary unbranded elegant sports coupe, front three-quarter viewpoint pointing left, subtle electric cobalt reflections, clean black alloy wheels, smooth flowing sculptural body. Surrounding car: a sculptural crystal-clear arc of splashing water sweeps from behind and above rear of car to the far right, sparkling droplets and a small elegant ribbon of airy white soap foam at lower edge; composition must retain clear view of whole car. Airy fresh premium commercial automotive photography blended with high-end CGI, physically believable crystalline water with glossy highlights, intensely crisp beautiful material. Composition very wide landscape, car lower central, occupies 80% width, dynamic water arc frames upper right; generous transparent margins. Entire car and water shapes visible, no background panel, no ground plane rectangle, soft shadow only. White studio illumination, subtle cool blue reflections. No text, logos, license plate text, watermark, humans or UI. Genuinely transparent background, not white. Concept image for a website, not company documentary photography.",
+  "format_processing": "PNG converted to WebP; alpha preserved; no compositional alteration.",
+  "original_filename": "exec-2f33b2c0-dffc-413c-a574-49f8e0e30deb.png"
+}
