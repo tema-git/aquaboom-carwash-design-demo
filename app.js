@@ -13,11 +13,6 @@
     const key = link.dataset.link;
     link.href = key === 'phone' ? `tel:${company.phoneHref}` : key === 'secondPhone' ? `tel:${company.secondPhoneHref}` : key === 'email' ? `mailto:${company.email}` : company[key];
   });
-  const heroImage = $('.hero-car img');
-  const imageFallback = () => heroImage.parentElement.classList.add('image-failed');
-  heroImage.addEventListener('error', imageFallback);
-  if (heroImage.complete && !heroImage.naturalWidth) imageFallback();
-
   // The controls stay still; only the illustrative layers react to the pointer.
   const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const fineQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -27,7 +22,13 @@
   let frame = 0;
   let pointerFrame = 0;
   let pendingPointer = null;
+  let lastPaint = 0;
+  const clamp = value => Math.max(0, Math.min(1, value));
   const scenes = $$('[data-motion]').map(node => ({node, top:0, height:0, left:0, width:0, visible:false}));
+  const waterScenes = window.AquaWaterScenes ? [
+    window.AquaWaterScenes.create($('.hero-art'), 'hero'),
+    window.AquaWaterScenes.create($('.ritual-scene'), 'ritual')
+  ].filter(Boolean) : [];
   const measure = () => {
     scenes.forEach(scene => {
       const box = scene.node.getBoundingClientRect();
@@ -36,12 +37,22 @@
       scene.left = box.left;
       scene.width = box.width;
     });
+    waterScenes.forEach(scene => {
+      const box = scene.host.getBoundingClientRect();
+      scene.top = box.top + window.scrollY;
+      scene.height = box.height;
+    });
     scheduleScroll();
   };
-  const paintScroll = () => {
+  const paintScroll = time => {
     frame = 0;
+    if (document.hidden) return;
     const height = window.innerHeight;
     const y = window.scrollY;
+    const elapsed = lastPaint ? Math.min(time-lastPaint, 40) : 16;
+    const ease = 1-Math.exp(-elapsed/85);
+    let settling = false;
+    lastPaint = time;
     scenes.forEach(scene => {
       if (!motionEnabled) {
         scene.node.style.setProperty('--entry', '1');
@@ -53,9 +64,28 @@
       scene.node.style.setProperty('--entry', progress.toFixed(4));
       scene.node.style.setProperty('--travel', (1 - progress).toFixed(4));
     });
+    waterScenes.forEach(scene => {
+      if (!motionEnabled) {
+        scene.current = .36;
+        scene.render(.36);
+        return;
+      }
+      const inView = y+height > scene.top-80 && y < scene.top+scene.height+80;
+      // The hero unfolds while it leaves; the second scene starts at its first entrance.
+      const target = scene.variant === 'hero'
+        ? clamp(y / Math.max(1, scenes[0].height*.78))
+        : clamp((y+height-scene.top) / (height+scene.height*.82));
+      if (!inView) {scene.current=target;return;}
+      const difference = target-scene.current;
+      scene.current = Math.abs(difference)<.0008 ? target : scene.current+difference*ease;
+      scene.render(scene.current);
+      if (Math.abs(target-scene.current)>.0008) settling=true;
+    });
+    if (settling) scheduleScroll();
+    else lastPaint=0;
   };
   function scheduleScroll() {
-    if (!frame) frame = requestAnimationFrame(paintScroll);
+    if (!frame && !document.hidden) frame = requestAnimationFrame(paintScroll);
   }
   const observer = new IntersectionObserver(entries => entries.forEach(entry => {
     const scene = scenes.find(item => item.node === entry.target);
@@ -88,11 +118,14 @@
     }, {passive:true});
   });
   function syncMotion() {
-    motionEnabled = userMotion === null ? !reduceQuery.matches : userMotion;
+    // OS reduced motion has priority, including after a runtime preference change.
+    motionEnabled = !reduceQuery.matches && userMotion !== false;
     document.documentElement.classList.toggle('motion-paused', !motionEnabled);
     if (motionButton) {
       motionButton.setAttribute('aria-pressed', String(motionEnabled));
       motionButton.textContent = `Анимация: ${motionEnabled ? 'вкл.' : 'выкл.'}`;
+      motionButton.disabled = reduceQuery.matches;
+      motionButton.title = reduceQuery.matches ? 'Анимация выключена настройками системы' : 'Включить или выключить декоративное движение';
     }
     if (!motionEnabled) scenes.forEach(({node}) => {
       node.style.setProperty('--mx','0');node.style.setProperty('--my','0');
@@ -105,6 +138,12 @@
   window.addEventListener('scroll', scheduleScroll, {passive:true});
   window.addEventListener('resize', measure, {passive:true});
   window.addEventListener('load', measure, {once:true});
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(frame);cancelAnimationFrame(pointerFrame);
+      frame=0;pointerFrame=0;pendingPointer=null;lastPaint=0;
+    } else measure();
+  });
   document.fonts?.ready.then(measure);
   syncMotion();measure();
 
@@ -216,7 +255,7 @@
       setError(nameField,'Введите имя: не меньше двух букв.');firstError=nameField;
     }
     const digits=phoneField.value.replace(/\D/g,'');
-    const phoneValid = /^(?:7|8)\d{10}$/.test(digits) || /^9\d{9}$/.test(digits);
+    const phoneValid = /^\+?[\d\s().-]+$/.test(phoneField.value.trim()) && (/^(?:7|8)\d{10}$/.test(digits) || /^9\d{9}$/.test(digits));
     if (!phoneValid) {
       setError(phoneField,'Введите российский номер целиком: +7 и ещё 10 цифр.');
       if (!firstError) firstError=phoneField;

@@ -19,3 +19,28 @@
 
 /* Keep the complete Cyrillic hero line inside the 320 px viewport. */
 @media(max-width:350px){.hero h1{font-size:clamp(74px,24vw,84px);max-width:100%}}
+
+/* The car is drawn at device resolution; water has independent front/back geometry. */
+.hero-car{top:115px;left:-5%;width:96%;height:450px;z-index:2;transform:none;transition:none;filter:none}
+.car-canvas-mount{position:relative;width:100%;height:100%;pointer-events:none}
+.car-canvas-mount canvas,.car-canvas-mount>svg{display:block;width:100%;height:100%}
+.live-water{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.live-water-back{z-index:1;transform:translate(calc(var(--mx)*-7px),calc(var(--my)*-4px))}
+.live-water-front{z-index:3;transform:translate(calc(var(--mx)*9px),calc(var(--my)*5px))}
+.water-halo{z-index:0}
+.has-live-water>.orbit{opacity:.28}
+.hero-art>.bubble,.art-label{z-index:4}
+.hero-art>.bubble{opacity:.65}
+.has-live-water>.water-stream,.has-live-water>.foam-dot,.has-live-water>.ritual-ring{display:none}
+.ritual-scene{height:430px;isolation:isolate}
+.ritual-car{z-index:2;bottom:40px;height:285px;transform:translateX(-50%);transition:none}
+.ritual-scene .live-water{left:0;top:-22px;height:calc(100% + 42px)}
+.ritual-scene .water-back-ribbons{opacity:.88}
+.ritual-scene .water-secondary-ribbons{opacity:.6}
+.motion-toggle:disabled{cursor:default;color:#536b8c;border-color:#c6d8e9}
+.motion-paused .live-water{transform:none}
+@media(max-width:1100px) and (min-width:801px){.hero-car{top:135px;height:410px}}
+@media(max-width:800px){.hero-car{top:48px;left:calc((100% - 100vw)/2 + 16px);width:calc(100vw - 32px);height:350px;transform:none}.ritual-scene{height:330px}.ritual-car{bottom:20px;height:245px}.ritual-scene .live-water{left:-4%;width:108%;top:-10px;height:calc(100% + 20px)}}
+@media(max-width:480px){.hero-art{height:360px}.hero-car{top:53px;height:260px;width:calc(100vw - 32px);left:calc((100% - 100vw)/2 + 16px);transform:none}.art-label{bottom:48px;right:18%;font-size:14px}.ritual-scene{height:245px}.ritual-car{bottom:2px;height:205px;width:110%}.ritual-scene .live-water{left:-10%;width:120%;top:-10px;height:calc(100% + 20px)}}
+@media(max-width:350px){.hero-car{top:58px;height:250px}.art-label{bottom:48px}}
+@media(prefers-reduced-motion:reduce){.live-water{transform:none!important}}

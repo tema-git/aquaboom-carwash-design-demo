@@ -19,7 +19,12 @@
   "primary_source": "https://urbanplaces.su/ru_moskva/moskva/card-525539-aquaboom",
   "secondary_source": "https://scherbinka.biglion.ru/deals/moyka-avtomobilya-aquaboom1-31/",
   "purpose": "Independent design concept; not official business website; no real bookings or message sending.",
-  "images": "AI-created illustrative assets; not photographs of company premises or clients.",
+  "imagery": {
+    "hero_car": "Procedural Three.js geometry, paint, glass, wheels and lights written in car-scene.js; no raster image or imported vehicle model.",
+    "water": "Original layered SVG curves, reflections and droplets, reshaped by scroll progress in water-scenes.js.",
+    "secondary_cars": "Inline SVG vector illustrations; not photographs of company premises or clients.",
+    "legacy_asset": "The earlier AI-generated assets/hero-car.webp is retained as an unused historical asset and is not referenced or loaded by the page."
+  },
   "limitations": [
     "Published contacts reconfirmed; answerability and delivery not tested.",
     "Current prices and guarantees intentionally omitted.",
