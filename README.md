@@ -32,3 +32,8 @@ Avoid copying `.git` or deployment credentials. All application links are relati
 - Header: visible “Контакты” on desktop and 320 px mobile, sticky; target `#contacts` remains below header.
 
 JavaScript syntax checks run with Node. Parent performs real desktop/mobile browser playthrough, form checks, screenshots and published-site verification before delivery.
+
+
+### Updated procedural car
+
+The hero now imports the shared four-door model from `car-geometry.js` through `car-scene.js`. Both files and their cache hashes must travel together when updating a company copy. Preserve the company's HTML/branding and update only the module reference and inline fallback; see the propagation notes in `DESIGN.md`. No new package or remote asset is required.
