@@ -16,8 +16,6 @@
   // The controls stay still; only the illustrative layers react to the pointer.
   const reduceQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const fineQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const motionButton = $('#motion-toggle');
-  let userMotion = null;
   let motionEnabled = !reduceQuery.matches;
   let frame = 0;
   let pointerFrame = 0;
@@ -119,21 +117,14 @@
   });
   function syncMotion() {
     // OS reduced motion has priority, including after a runtime preference change.
-    motionEnabled = !reduceQuery.matches && userMotion !== false;
+    motionEnabled = !reduceQuery.matches;
     document.documentElement.classList.toggle('motion-paused', !motionEnabled);
-    if (motionButton) {
-      motionButton.setAttribute('aria-pressed', String(motionEnabled));
-      motionButton.textContent = `Анимация: ${motionEnabled ? 'вкл.' : 'выкл.'}`;
-      motionButton.disabled = reduceQuery.matches;
-      motionButton.title = reduceQuery.matches ? 'Анимация выключена настройками системы' : 'Включить или выключить декоративное движение';
-    }
     if (!motionEnabled) scenes.forEach(({node}) => {
       node.style.setProperty('--mx','0');node.style.setProperty('--my','0');
       node.style.setProperty('--px','50%');node.style.setProperty('--py','50%');
     });
     scheduleScroll();
   }
-  motionButton?.addEventListener('click', () => {userMotion = !motionEnabled;syncMotion();});
   reduceQuery.addEventListener('change', syncMotion);
   window.addEventListener('scroll', scheduleScroll, {passive:true});
   window.addEventListener('resize', measure, {passive:true});
@@ -170,6 +161,7 @@
     $('#service-icon').setAttribute('href', `#${service.icon}`);
     $('#service-book').firstChild.textContent = 'Обсудить услугу';
     $('#service').value = id;
+    $('#service').dispatchEvent(new Event('change', {bubbles:true}));
     measure();
   };
   tabs.forEach((tab,index) => {
@@ -184,56 +176,16 @@
       event.preventDefault();selectService(tabs[next].dataset.service, true);
     });
   });
-  $('#service-book').addEventListener('click', () => {$('#service').value = selected;});
-  $$('.faq-list details').forEach(item => item.addEventListener('toggle', measure));
-
-  // An accessible two-step mini-game: 6 foam targets, then 6 rinse targets.
-  // State changes synchronously, so fast repeat clicks cannot increment a zone twice.
-  const game = $('.wash-game');
-  const zoneButtons = $$('[data-zone]');
-  const zoneNames = zoneButtons.map(button => $('.zone-label',button).textContent);
-  let phase = 'foam';
-  let done = new Set();
-  let completed = 0;
-  function renderGame() {
-    game.dataset.phase = phase;
-    $('#game-count').textContent = String(done.size);
-    $('#game-progress').style.width = `${completed/12*100}%`;
-    zoneButtons.forEach((button,index) => {
-      const isDone = done.has(index);
-      button.classList.toggle('foamed', phase==='foam' ? isDone : phase==='rinse' && !isDone);
-      button.classList.toggle('clean', phase==='complete' || phase==='rinse' && isDone);
-      button.setAttribute('aria-disabled', String(isDone || phase==='complete'));
-      button.setAttribute('aria-label', `${phase==='foam' ? (isDone?'Пена нанесена':'Нанести пену') : phase==='complete'||isDone ? 'Чисто' : 'Смыть пену'}: ${zoneNames[index]}`);
-      $('svg use',button).setAttribute('href', phase==='complete'||phase==='rinse'&&isDone ? '#check' : '#drop');
-    });
-  }
-  zoneButtons.forEach((button,index) => button.addEventListener('click', () => {
-    if (phase==='complete' || done.has(index)) return;
-    done.add(index);completed += 1;
-    if (done.size===6 && phase==='foam') {
-      phase='rinse';done=new Set();
-      $('#game-step').innerHTML='<span>2</span>Смойте пену';
-      $('#game-instruction').textContent='Пена на месте! Теперь нажмите на каждую светлую метку, чтобы смыть её.';
-      $('#game-status').textContent='Пена нанесена на все 6 зон. Переходим к чистоте.';
-    } else if (done.size===6 && phase==='rinse') {
-      phase='complete';
-      $('#game-step').innerHTML='<span><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#check"/></svg></span>Чистый кайф!';
-      $('#game-instruction').textContent='Городской шум смыт. Автомобиль снова сияет.';
-      $('#game-status').textContent='Готово: все 6 зон чистые! Можно прокатиться ещё раз — начните заново.';
-    } else {
-      $('#game-status').textContent = `${zoneNames[index]}: ${phase==='foam'?'пена нанесена':'снова чисто'}. Осталось ${6-done.size}.`;
+  $('#service-book').addEventListener('click', () => {
+    if ($('#booking-entry').hidden) {
+      form.reset();clearError(nameField);clearError(phoneField);
+      $('#booking-success').hidden=true;$('#booking-entry').hidden=false;
     }
-    renderGame();
-  }));
-  $('#game-reset').addEventListener('click', () => {
-    phase='foam';done=new Set();completed=0;
-    $('#game-step').innerHTML='<span>1</span>Нанесите пену';
-    $('#game-instruction').textContent='Нажмите на каждую синюю метку, чтобы нанести пену.';
-    $('#game-status').textContent='Новая поездка — новый чистый старт. Нанесите пену на 6 зон.';
-    renderGame();
+    $('#service').value=selected;
+    $('#service').dispatchEvent(new Event('change', {bubbles:true}));
+    measure();
   });
-  renderGame();
+  $$('.faq-list details').forEach(item => item.addEventListener('toggle', measure));
 
   // Browser-only validation, with no network request or persistent storage.
   const form = $('#booking-form');

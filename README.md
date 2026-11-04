@@ -7,7 +7,9 @@ Buildless HTML/CSS/JS, designed for GitHub Pages. Serve this directory over HTTP
 - `company.js`: business contact configuration and four service panels.
 - `index.html`: semantic and no-JavaScript baseline, SEO metadata and SVG UI/scene symbols.
 - `style.css`: responsive layout, visual system, pointer / scroll compositions and reduced-motion states.
-- `app.js`: service tabs, two-stage wash game, native form validation and motion toggle. No storage or network requests.
+- `app.js`: service tabs, local form validation and OS reduced-motion handling. No storage or network requests.
+- `wash-game.js` / `wash-game.css`: procedural Canvas car wash, interpolated foam/water strokes, silhouette coverage, droplets, keyboard controls and replay.
+- `interface.js`: accessible custom service picker backed by the native select, plus a fixed-target magnetic Contacts label.
 - `water-scenes.js`: original layered SVG water, continuously reshaped by native scroll progress. No image sequence, video or animation dependency.
 - `car-scene.js` and local `vendor/`: procedural Three.js hero car supplied by the parent task; geometry, paint, glass, wheels and lights are code, without image/model assets. The smaller cars are inline SVG.
 - Local fonts are licensed by `assets/OFL-Manrope.txt`. The previous generated hero image is no longer referenced by the page.
@@ -23,9 +25,10 @@ Avoid copying `.git` or deployment credentials. All application links are relati
 ## Browser verification targets
 
 - Service tabs: `[data-service]`, expected `aria-selected`; arrow keys, Home and End supported. `#service` carries current choice into the demo form.
-- Game: click each `[data-zone="0"]` through `5` once for foam. Then click each once again for rinse. `.wash-game[data-phase="complete"]` and full progress indicate victory. `#game-reset` restarts. Rapid repeated clicks cannot increment completed zones twice.
+- Game: `#wash-stage` / `#wash-canvas`. Sweep the car with three broad horizontal strokes over roof, body and wheels. `data-phase` on `.wash-play` changes from `foam` to `foam-ready`; choose `[data-wash-tool="water"]`, repeat until `complete`. `#wash-percent` and `.wash-meter` give progress; `#wash-reset` restores the dirty car. Outside-silhouette strokes do not score. Keyboard: focus the stage; arrows move the nozzle, hold Space/Enter to spray. The instructions are screen-reader-only.
+- Picker: `#service-picker`, `#service-options`, native hidden `#service`. Supports arrows, Home/End, typing, Enter/Space, Escape, Tab dismissal, pointer selection, outside dismissal and form reset.
 - Form: `#booking-form`, `#name`, `#phone`, `#service`. Empty/short name and malformed phone show associated errors. Successful validation shows `#booking-success`, clears personal fields and explicitly says there was no sending or appointment. `#form-retry` restores the form.
-- Motion: footer `#motion-toggle`, `aria-pressed`; OS reduced motion has priority and disables the toggle with an explanatory title. With motion on, `.hero-art` and `.ritual-scene` expose `data-water-progress` and `data-water-phase` (`arrive`, `wrap`, `drain`). Scroll forward/backward to verify different SVG path geometry and reflection positions; the car mount itself stays still. Water frames settle after scrolling and stop when the scene is outside the viewport or the tab is hidden. All essential content remains visible.
+- Motion: follows OS reduced motion, without a visible settings control. With motion on, `.hero-art` and `.ritual-scene` expose `data-water-progress` and `data-water-phase` (`arrive`, `wrap`, `drain`). Scroll forward/backward to verify different SVG path geometry and reflection positions; the car mount itself stays still. Water frames settle after scrolling and stop when the scene is outside the viewport or the tab is hidden. All essential content remains visible.
 - Header: visible “Контакты” on desktop and 320 px mobile, sticky; target `#contacts` remains below header.
 
 JavaScript syntax checks run with Node. Parent performs real desktop/mobile browser playthrough, form checks, screenshots and published-site verification before delivery.

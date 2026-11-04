@@ -22,7 +22,7 @@
   "imagery": {
     "hero_car": "Procedural Three.js geometry, paint, glass, wheels and lights written in car-scene.js; no raster image or imported vehicle model.",
     "water": "Original layered SVG curves, reflections and droplets, reshaped by scroll progress in water-scenes.js.",
-    "secondary_cars": "Inline SVG vector illustrations; not photographs of company premises or clients.",
+    "secondary_cars": "The wash ritual uses inline SVG. The playable wash car, wheel details, dirt, foam and hose are drawn procedurally on Canvas in wash-game.js; no imported image or video.",
     "legacy_asset": "The earlier AI-generated assets/hero-car.webp is retained as an unused historical asset and is not referenced or loaded by the page."
   },
   "limitations": [
