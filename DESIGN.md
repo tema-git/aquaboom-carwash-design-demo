@@ -1,3 +1,5 @@
+> Current model, approved 2026-11-07: Porsche 911 Carrera 4S by Karol Miklas / Lionsharp Studios (CC BY-SA 4.0), with approved runtime adaptations. Transfer all model/decoder assets and retain the attribution. The earlier Panamera design and propagation notes below are historical and superseded. Smaller car scenes and the wash game now reuse the same approved 3D geometry.
+
 # AQUABOOM — a clean city reset
 
 Independent Russian-language website concept for the car wash at Moscow, Kronshtadtskiy Boulevard, 35B. The main visitor task is to choose a service, find the business and call. The form is explicitly a demonstration and creates no appointment.
@@ -6,7 +8,7 @@ Independent Russian-language website concept for the car wash at Moscow, Kronsht
 
 The memorable object is a large pearl car wrapped in clear water, against an icy canvas. The composition comes from the subject: a vehicle arriving from the city and leaving clean. The initial generic idea of four equal service cards was replaced with a large interactive care panel, an immersive blue wash scene and a continuous hose-controlled wash interaction. Headings remain readable HTML rather than text painted into images. No decorative crosshairs, ornamental plus signs, fake metrics or invented testimonials.
 
-The hero pairs the short, oversized “Чистый кайф.” headline with a broad procedural 3D car. Geometry, wheels, glass, lights and reflective paint are created in code; water is a separate pair of SVG layers surrounding it. The section sequence alternates pale blue, white, full cobalt, white and deep navy; this is a progression in the wash experience rather than a repeated card layout. Rounded form and game surfaces differ from circular bubbles, pill buttons and unboxed text.
+The hero pairs the short, oversized “Чистый кайф.” headline with the approved licensed 911 Carrera 4S. The GLB geometry retains its headlights, glass, wheels and body surfaces; water is a separate pair of SVG layers surrounding it. The section sequence alternates pale blue, white, full cobalt, white and deep navy; this is a progression in the wash experience rather than a repeated card layout. Rounded form and game surfaces differ from circular bubbles, pill buttons and unboxed text.
 
 ## Tokens
 

@@ -11,7 +11,7 @@ Buildless HTML/CSS/JS, designed for GitHub Pages. Serve this directory over HTTP
 - `wash-game.js` / `wash-game.css`: procedural Canvas car wash, interpolated foam/water strokes, silhouette coverage, droplets, keyboard controls and replay.
 - `interface.js`: accessible custom service picker backed by the native select, plus a fixed-target magnetic Contacts label.
 - `water-scenes.js`: original layered SVG water, continuously reshaped by native scroll progress. No image sequence, video or animation dependency.
-- `car-scene.js` and local `vendor/`: procedural Three.js hero car supplied by the parent task; geometry, paint, glass, wheels and lights are code, without image/model assets. The smaller cars are inline SVG.
+- `car-scene.js` and local `vendor/`: the approved 911 Carrera 4S model (Karol Miklas / Lionsharp Studios, CC BY-SA 4.0), rendered with local Three.js. Smaller scenes and the wash game reuse the same geometry through `car-projection.js`.
 - Local fonts are licensed by `assets/OFL-Manrope.txt`. The previous generated hero image is no longer referenced by the page.
 - `SOURCE.json`: company source references and limits.
 - `DESIGN.md`: visual decisions and interaction behavior.
@@ -36,4 +36,4 @@ JavaScript syntax checks run with Node. Parent performs real desktop/mobile brow
 
 ### Updated procedural car
 
-The hero now imports the shared four-door model from `car-geometry.js` through `car-scene.js`. Both files and their cache hashes must travel together when updating a company copy. Preserve the company's HTML/branding and update only the module reference and inline fallback; see the propagation notes in `DESIGN.md`. No new package or remote asset is required.
+The hero imports the approved coupe from `car-geometry.js`. Transfer its scene, projection module, local loaders/decoder, GLB and `models/LICENSE.html` together. Keep company identity, contacts and unrelated content intact. The wash game and water scene use a canvas projection of the same 3D model; interaction remains code-driven. Attribution and adaptation details are in `models/LICENSE.html`.
